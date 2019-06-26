@@ -1,4 +1,4 @@
-import getLocation from '../../code/regex/index'
+import getLocation from '../../code/regex/url'
 
 test('getLocation 1', () => {
   expect(getLocation('http://www.baidu.com')).toEqual({
