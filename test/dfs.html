@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div class="father">
+
+        <div class="child1">
+            <div class="grandchidld1">grandchidld1</div>
+            <div class="grandchidld2">grandchidld2</div>
+        </div>
+
+        <div class="child2">
+            <div class="grandchidld3">grandchidld3
+                    <div class="grandgrandchild1">grandgrandchild1</div>
+            </div>
+            <div class="grandchidld4">
+                grandchidld4
+            </div>
+        </div>
+
+        <div class="child3">
+            <div class="grandchidld5">grandchidld5</div>
+            <div class="grandchidld6">grandchidld6</div>
+        </div>
+
+        <div class="child4">
+            <div class="grandchidld7">grandchidld7</div>
+            <div class="grandchidld8">grandchidld8</div>
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+
+
+    function queue(arr){
+        this.arr = arr || [];
+    }
+
+    queue.prototype.push = function (item) {
+        this.arr.push(item);
+    }
+
+    queue.prototype.pop = function() {
+        return this.arr.shift();
+    }
+
+   function handler(node){
+       // console.log(`node.nodeName:${node.nodeName},content:${node.className}`);
+       node  && node.className && console.log(node.className);
+   }
+
+    function deepFirstSearch(tree,handler) {
+        typeof handler === 'function' &&  handler(tree);
+        if(tree.childNodes && tree.childNodes.length>0) {
+            tree.childNodes.forEach(childTree=>{
+                deepFirstSearch(childTree,handler)  
+            })
+        }
+    }
+    
+
+    const que = new queue();
+    // 广度优先需要使用队列配合配合
+    function brandFirstSearch(tree,handler,isRoot) {
+        
+        que.push(tree);
+
+        typeof handler === 'function' &&  handler(tree);
+
+        if( !isRoot && tree.nextSibling) { // 节点
+
+            brandFirstSearch(tree.nextSibling,handler); 
+
+        } else {
+
+            let nextStart = getHasChildItem(que);
+            if(nextStart.childNodes && nextStart.childNodes.length){
+                brandFirstSearch(nextStart.childNodes[0],handler);
+            }
+        } 
+
+
+        function getHasChildItem(que){
+            let item = {}
+            while( !(item && item.childNodes && item.childNodes.length) ) {
+                item = que.pop();
+            }
+            return item;
+        }
+        
+    }
+
+    let tree = document.getElementsByClassName('father')[0];
+
+  //  deepFirstSearch(tree,handler)
+
+  brandFirstSearch(tree,handler,true)
+
+</script>
+
+</html>
